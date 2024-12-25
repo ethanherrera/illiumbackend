@@ -19,4 +19,7 @@ class ClassTechniqueService(
     fun deleteClassTechnique(id: Long) = classTechniqueRepository.deleteById(id)
 
     fun saveAllClassTechnique(cts: List<ClassTechnique>): List<ClassTechnique> = classTechniqueRepository.saveAll(cts)
+
+    fun saveClassTechnique(ct: ClassTechnique): ClassTechnique = classTechniqueRepository.save(ct)
+
 }

@@ -8,6 +8,8 @@ data class ClassTechnique(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
+    val status: ClassTechniqueStatus = ClassTechniqueStatus.PENDING,
+
     @ManyToOne
     @JoinColumn(name = "class_id")
     val gymClass: GymClass,
@@ -19,3 +21,7 @@ data class ClassTechnique(
     // Additional metadata (e.g., date added, priority, etc.)
     val notes: String? = null
 )
+
+enum class ClassTechniqueStatus {
+    COMPLETED, PENDING, SKIPPED
+}

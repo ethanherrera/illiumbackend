@@ -42,6 +42,28 @@ class GymClassController(
         }
     }
 
+    @PostMapping("/complete")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    fun completeClassTechnique(@RequestParam id: Long): ResponseEntity<Any> {
+        return try {
+            val completedTechnique = gymClassService.completeTechnique(id)
+            ResponseEntity(completedTechnique, HttpStatus.OK)
+        } catch (e: Exception) {
+            ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @PostMapping("/skip")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    fun skipClassTechnique(@RequestParam id: Long): ResponseEntity<Any> {
+        return try {
+            val completedTechnique = gymClassService.skipTechnique(id)
+            ResponseEntity(completedTechnique, HttpStatus.OK)
+        } catch (e: Exception) {
+            ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteClass(@PathVariable id: Long) = gymClassService.deleteClass(id)

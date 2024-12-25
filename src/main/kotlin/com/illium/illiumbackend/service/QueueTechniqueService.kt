@@ -12,6 +12,7 @@ class QueueTechniqueService(
 
     fun getAllQueueTechniques(): List<QueueTechnique> = queueTechniqueRepository.findAll()
 
+    fun saveQueueTechnique(qt: QueueTechnique): QueueTechnique = queueTechniqueRepository.save(qt)
     fun saveAllQueueTechniques(qts: List<QueueTechnique>): List<QueueTechnique> = queueTechniqueRepository.saveAll(qts)
 
     fun getQueueTechniqueById(id: Long): QueueTechnique =

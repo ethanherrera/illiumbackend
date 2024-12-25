@@ -13,5 +13,5 @@ data class GymClass(
 
     @OneToOne
     @JoinColumn(name = "queue_id")
-    var queue: Queue? = null
+    var queue: Queue = Queue(name="Default Queue")
 )

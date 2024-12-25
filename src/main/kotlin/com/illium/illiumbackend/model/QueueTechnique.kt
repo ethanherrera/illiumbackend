@@ -15,6 +15,4 @@ data class QueueTechnique(
     @ManyToOne
     @JoinColumn(name = "technique_id")
     val technique: Technique,
-
-    val position: Int = 0
 )

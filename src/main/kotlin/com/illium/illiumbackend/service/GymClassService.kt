@@ -30,7 +30,6 @@ class GymClassService(
             QueueTechnique(
                 queue = savedQueue,
                 technique = technique,
-                position = index + 1
             )
         }
         queueTechniqueService.saveAllQueueTechniques(queueTechniques)
@@ -60,11 +59,30 @@ class GymClassService(
         val classTechniques = techniquesToDequeue.map { queueTechnique ->
             ClassTechnique(
                 gymClass = gymClass,
+                status = ClassTechniqueStatus.PENDING,
                 technique = queueTechnique.technique,
                 notes = "Dequeued from queue"
             )
         }
         classTechniqueService.saveAllClassTechnique(classTechniques)
-        return techniquesToDequeue.map { it.technique }
+        return classTechniques.map { it.technique }
+    }
+
+    fun completeTechnique(id: Long): ClassTechnique {
+        val classTechnique = classTechniqueService.getClassTechniqueById(id)
+        val classTechniqueCopy = classTechnique.copy(status = ClassTechniqueStatus.COMPLETED)
+        return classTechniqueService.saveClassTechnique(classTechniqueCopy)
+    }
+
+    fun skipTechnique(id: Long): ClassTechnique {
+        val classTechnique = classTechniqueService.getClassTechniqueById(id)
+        val classTechniqueCopy = classTechnique.copy(status = ClassTechniqueStatus.SKIPPED)
+        queueTechniqueService.saveQueueTechnique(
+            QueueTechnique(
+                queue = classTechnique.gymClass.queue,
+                technique = classTechnique.technique
+            )
+        )
+        return classTechniqueService.saveClassTechnique(classTechniqueCopy)
     }
 }
