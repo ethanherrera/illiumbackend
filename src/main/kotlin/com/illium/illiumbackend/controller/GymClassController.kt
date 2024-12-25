@@ -31,6 +31,17 @@ class GymClassController(
         }
     }
 
+    @PostMapping("/deque")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    fun dequeTechnique(@RequestParam gymClassId: Long, @RequestParam(defaultValue = "5") amount: Int): ResponseEntity<Any> {
+        return try {
+            val techniques = gymClassService.dequeTechniques(gymClassId, amount)
+            ResponseEntity(techniques, HttpStatus.OK)
+        } catch (e: Exception) {
+            ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteClass(@PathVariable id: Long) = gymClassService.deleteClass(id)

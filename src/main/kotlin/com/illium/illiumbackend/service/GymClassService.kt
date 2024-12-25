@@ -1,20 +1,20 @@
 package com.illium.illiumbackend.service
 
-import com.illium.illiumbackend.model.GymClass
-import com.illium.illiumbackend.model.Queue
-import com.illium.illiumbackend.model.QueueTechnique
+import com.illium.illiumbackend.model.*
 import com.illium.illiumbackend.repository.GymClassRepository
 import com.illium.illiumbackend.repository.QueueRepository
 import com.illium.illiumbackend.repository.QueueTechniqueRepository
 import com.illium.illiumbackend.repository.TechniqueRepository
 import org.springframework.stereotype.Service
+import kotlin.math.min
 
 @Service
 class GymClassService(
     private val gymClassRepository: GymClassRepository,
     private val queueService: QueueService,
     private val techniqueService: TechniqueService,
-    private val queueTechniqueService: QueueTechniqueService
+    private val queueTechniqueService: QueueTechniqueService,
+    private val classTechniqueService: ClassTechniqueService
 ) {
 
     fun getAllClasses(): List<GymClass> = gymClassRepository.findAll()
@@ -44,4 +44,27 @@ class GymClassService(
     fun createDefaultClass(gymClass: GymClass): GymClass = gymClassRepository.save(gymClass)
 
     fun deleteClass(id: Long) = gymClassRepository.deleteById(id)
+
+    fun dequeTechniques(id: Long, amount: Int): List<Technique> {
+        val gymClass = getClassById(id)
+        val queue = gymClass.queue ?: throw Exception("Class with id: $id does not contain a queue")
+        val queueTechniques = queueTechniqueService.findTechniquesByQueueId(queue.id)
+        if (queueTechniques.isEmpty()) {
+            throw Exception("No techniques available in the queue for class with ID: $id")
+        }
+        val amountToTake = min(queueTechniques.size, amount)
+        val techniquesToDequeue = queueTechniques.take(amountToTake)
+        techniquesToDequeue.forEach { queueTechnique ->
+            queueTechniqueService.deleteQueueTechnique(queueTechnique.id)
+        }
+        val classTechniques = techniquesToDequeue.map { queueTechnique ->
+            ClassTechnique(
+                gymClass = gymClass,
+                technique = queueTechnique.technique,
+                notes = "Dequeued from queue"
+            )
+        }
+        classTechniqueService.saveAllClassTechnique(classTechniques)
+        return techniquesToDequeue.map { it.technique }
+    }
 }
