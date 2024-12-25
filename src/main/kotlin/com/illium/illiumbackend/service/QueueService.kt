@@ -17,4 +17,6 @@ class QueueService(
     fun createQueue(queue: Queue): Queue = queueRepository.save(queue)
 
     fun deleteQueue(id: Long) = queueRepository.deleteById(id)
+
+    fun updateQueue(queue: Queue): Queue = queueRepository.save(queue)
 }

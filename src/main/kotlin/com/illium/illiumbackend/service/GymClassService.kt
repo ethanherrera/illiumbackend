@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service
 @Service
 class GymClassService(
     private val gymClassRepository: GymClassRepository,
-    private val queueRepository: QueueRepository,
-    private val techniqueRepository: TechniqueRepository,
-    private val queueTechniqueRepository: QueueTechniqueRepository
+    private val queueService: QueueService,
+    private val techniqueService: TechniqueService,
+    private val queueTechniqueService: QueueTechniqueService
 ) {
 
     fun getAllClasses(): List<GymClass> = gymClassRepository.findAll()
@@ -22,28 +22,26 @@ class GymClassService(
     fun getClassById(id: Long): GymClass =
         gymClassRepository.findById(id).orElseThrow { Exception("Class not found") }
 
-    fun createClass(gymClass: GymClass): GymClass = gymClassRepository.save(gymClass)
-
-    fun createDefaultClass(gymClass: GymClass): GymClass {
-        val savedClass = gymClassRepository.save(gymClass)
-
-        // Create a queue
-        val queue = Queue(name = "${gymClass.name} Queue")
-        val savedQueue = queueRepository.save(queue)
-
-        // Retrieve all techniques from the database
-        val techniques = techniqueRepository.findAll()
-
-        // Populate the queue with all techniques
-        val queueTechniques = techniques.mapIndexed { index, technique ->
-            QueueTechnique(queue = savedQueue, technique = technique, position = index + 1)
+    fun createClass(gymClass: GymClass): GymClass {
+        val savedQueue = queueService.createQueue(Queue(name="{gymClass.name queue}"))
+        val techniques = techniqueService.getAllTechniques()
+        val queueTechniques = techniques.mapIndexed {
+            index, technique ->
+            QueueTechnique(
+                queue = savedQueue,
+                technique = technique,
+                position = index + 1
+            )
         }
-        queueTechniqueRepository.saveAll(queueTechniques)
+        queueTechniqueService.saveAllQueueTechniques(queueTechniques)
+        val queueClass: GymClass = gymClass.copy(queue = savedQueue)
+        return gymClassRepository.save(queueClass)
 
-        // Associate the queue with the class
-        savedClass.queue = savedQueue
-        return gymClassRepository.save(savedClass)
+
+
     }
+
+    fun createDefaultClass(gymClass: GymClass): GymClass = gymClassRepository.save(gymClass)
 
     fun deleteClass(id: Long) = gymClassRepository.deleteById(id)
 }

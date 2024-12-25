@@ -2,6 +2,7 @@ package com.illium.illiumbackend
 
 import com.illium.illiumbackend.controller.GymClassController
 import com.illium.illiumbackend.model.GymClass
+import com.illium.illiumbackend.model.Queue
 import com.illium.illiumbackend.service.GymClassService
 import org.mockito.Mockito.*
 import org.springframework.http.HttpStatus
@@ -22,7 +23,7 @@ class GymClassControllerTests {
         `when`(gymClassService.createDefaultClass(gymClass)).thenReturn(savedClass)
 
         // Act
-        val response = gymClassController.createClass(gymClass, default = true)
+        val response = gymClassController.createClass(gymClass)
 
         // Assert
         assertEquals(HttpStatus.OK, response.statusCode)
@@ -39,7 +40,7 @@ class GymClassControllerTests {
         `when`(gymClassService.createClass(gymClass)).thenReturn(savedClass)
 
         // Act
-        val response = gymClassController.createClass(gymClass, default = false)
+        val response = gymClassController.createClass(gymClass)
 
         // Assert
         assertEquals(HttpStatus.OK, response.statusCode)
@@ -56,7 +57,7 @@ class GymClassControllerTests {
         `when`(gymClassService.createClass(gymClass)).thenThrow(exception)
 
         // Act
-        val response = gymClassController.createClass(gymClass, default = false)
+        val response = gymClassController.createClass(gymClass)
 
         // Assert
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.statusCode)
@@ -75,7 +76,7 @@ class GymClassControllerTests {
         `when`(gymClassService.createDefaultClass(gymClass)).thenReturn(mockGymClass)
 
         // Act
-        val response = gymClassController.createClass(gymClass, default = true)
+        val response = gymClassController.createClass(gymClass)
 
         // Assert
         assertEquals(HttpStatus.OK, response.statusCode)

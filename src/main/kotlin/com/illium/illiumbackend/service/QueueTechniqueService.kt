@@ -11,6 +11,8 @@ class QueueTechniqueService(
 
     fun getAllQueueTechniques(): List<QueueTechnique> = queueTechniqueRepository.findAll()
 
+    fun saveAllQueueTechniques(qts: List<QueueTechnique>): List<QueueTechnique> = queueTechniqueRepository.saveAll(qts)
+
     fun getQueueTechniqueById(id: Long): QueueTechnique =
         queueTechniqueRepository.findById(id).orElseThrow { Exception("QueueTechnique not found") }
 

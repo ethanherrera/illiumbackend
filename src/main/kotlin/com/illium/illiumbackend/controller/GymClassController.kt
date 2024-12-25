@@ -22,19 +22,12 @@ class GymClassController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createClass(@RequestBody gymClass: GymClass,
-                    @RequestParam(required = false,
-                                  defaultValue = "false") default: Boolean): ResponseEntity<Any> {
-        try {
-            val createdClass: GymClass
-            if (default) {
-                createdClass = gymClassService.createDefaultClass(gymClass)
-                return ResponseEntity(createdClass, HttpStatus.OK)
-            }
-            createdClass = gymClassService.createClass(gymClass)
-            return ResponseEntity(createdClass, HttpStatus.OK)
+    fun createClass(@RequestBody gymClass: GymClass): ResponseEntity<Any> {
+        return try {
+            val createdClass = gymClassService.createClass(gymClass)
+            ResponseEntity(createdClass, HttpStatus.OK)
         } catch (e: Exception) {
-          return ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR)
+            ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
