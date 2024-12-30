@@ -1,6 +1,12 @@
 package com.illium.illiumbackend
 
+import com.illium.illiumbackend.model.GymClass
+import com.illium.illiumbackend.model.Queue
+import com.illium.illiumbackend.model.QueueTechnique
 import com.illium.illiumbackend.model.Technique
+import com.illium.illiumbackend.repository.GymClassRepository
+import com.illium.illiumbackend.repository.QueueRepository
+import com.illium.illiumbackend.repository.QueueTechniqueRepository
 import com.illium.illiumbackend.repository.TechniqueRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
@@ -10,7 +16,7 @@ import org.springframework.context.annotation.Configuration
 class DataInitializer {
 
     @Bean
-    fun populateDatabase(techniqueRepository: TechniqueRepository): CommandLineRunner {
+    fun populateDatabase(techniqueRepository: TechniqueRepository, queueRepository: QueueRepository, queueTechniqueRepository: QueueTechniqueRepository, classRepository: GymClassRepository): CommandLineRunner {
         return CommandLineRunner {
             // Define the techniques to populate
             val techniques = listOf(
@@ -151,7 +157,27 @@ class DataInitializer {
             // Populate the database if it's empty
             if (techniqueRepository.count() == 0L) {
                 techniqueRepository.saveAll(techniques)
-                println("Techniques have been successfully populated!")
+
+                val queues = listOf(
+                    Queue(name = "Level 1"),
+                    Queue(name = "Level 2"),
+                    Queue(name = "Level 3")
+                )
+                queueRepository.saveAll(queues)
+
+                val queueTechniques: ArrayList<QueueTechnique> = ArrayList<QueueTechnique>()
+                for (technique in techniques) {
+                    queueTechniques.add(QueueTechnique(queue = queues[technique.level-1], technique = technique));
+                }
+                queueTechniqueRepository.saveAll(queueTechniques)
+
+                val classes = listOf(
+                    GymClass(name="Level 1", queue=queues[0]),
+                    GymClass(name="Level 2", queue=queues[1]),
+                    GymClass(name="Level 3", queue=queues[2])
+                )
+                classRepository.saveAll(classes)
+
             } else {
                 println("Techniques already exist in the database. Skipping population.")
             }
