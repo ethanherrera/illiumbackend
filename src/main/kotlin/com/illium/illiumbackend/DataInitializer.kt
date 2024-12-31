@@ -177,7 +177,6 @@ class DataInitializer {
                     GymClass(name="Level 3", queue=queues[2])
                 )
                 classRepository.saveAll(classes)
-
             } else {
                 println("Techniques already exist in the database. Skipping population.")
             }
