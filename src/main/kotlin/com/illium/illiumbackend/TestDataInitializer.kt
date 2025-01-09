@@ -1,24 +1,20 @@
 package com.illium.illiumbackend
 
-import com.illium.illiumbackend.model.GymClass
-import com.illium.illiumbackend.model.Queue
-import com.illium.illiumbackend.model.QueueTechnique
-import com.illium.illiumbackend.model.Technique
-import com.illium.illiumbackend.repository.GymClassRepository
-import com.illium.illiumbackend.repository.QueueRepository
-import com.illium.illiumbackend.repository.QueueTechniqueRepository
-import com.illium.illiumbackend.repository.TechniqueRepository
+import com.illium.illiumbackend.model.*
+import com.illium.illiumbackend.repository.*
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
+import java.time.LocalDateTime
 
 @Configuration
-class DataInitializer {
+class TestDataInitializer {
 
     @Bean
-    fun populateDatabase(techniqueRepository: TechniqueRepository, queueRepository: QueueRepository, queueTechniqueRepository: QueueTechniqueRepository, classRepository: GymClassRepository): CommandLineRunner {
+    fun populateDatabase(techniqueRepository: TechniqueRepository, lessonQueueRepository: LessonQueueRepository, lessonQueueTechniqueRepository: LessonQueueTechniqueRepository, classRepository: EventRepository, eventQueueRepository: EventQueueRepository, recurringRuleRepository: RecurringRuleRepository): CommandLineRunner {
         return CommandLineRunner {
-            // Define the techniques to populate
+            // Create Techniques Table
             val techniques = listOf(
                 Technique(name = "Stances: Neutral Stance, Passive Stance, & Fighting Stance. Movement: Forward, Backward, Sideways Shadow Boxing/Fighting", level = 1),
                 Technique(name = "Handstrikes 1: Straight Punches (L/R Combination), Low Punches.", level = 1),
@@ -153,33 +149,38 @@ class DataInitializer {
                 Technique(name = "Bear Hugs 2:  Behind with Arms Free & Behind with Arms Caught", level = 3),
                 Technique(name = "Baseball Bat Stabbing Defense", level = 3),
             )
+            techniqueRepository.saveAll(techniques)
 
-            // Populate the database if it's empty
-            if (techniqueRepository.count() == 0L) {
-                techniqueRepository.saveAll(techniques)
+            // Create LessonQueues Table
+            val lessonQueues = listOf(
+                LessonQueue(name = "Level 1", level = 1),
+                LessonQueue(name = "Level 2", level = 2),
+                LessonQueue(name = "Level 3", level = 3)
+            )
+            lessonQueueRepository.saveAll(lessonQueues)
 
-                val queues = listOf(
-                    Queue(name = "Level 1"),
-                    Queue(name = "Level 2"),
-                    Queue(name = "Level 3")
-                )
-                queueRepository.saveAll(queues)
-
-                val queueTechniques: ArrayList<QueueTechnique> = ArrayList<QueueTechnique>()
-                for (technique in techniques) {
-                    queueTechniques.add(QueueTechnique(queue = queues[technique.level-1], technique = technique));
-                }
-                queueTechniqueRepository.saveAll(queueTechniques)
-
-                val classes = listOf(
-                    GymClass(name="Level 1", queue=queues[0]),
-                    GymClass(name="Level 2", queue=queues[1]),
-                    GymClass(name="Level 3", queue=queues[2])
-                )
-                classRepository.saveAll(classes)
-            } else {
-                println("Techniques already exist in the database. Skipping population.")
+            // Create LessonQueueTechniques Table
+            val lessonQueueTechniques: ArrayList<LessonQueueTechnique> = ArrayList()
+            for (technique in techniques) {
+                lessonQueueTechniques.add(LessonQueueTechnique(lessonQueue = lessonQueues[technique.level-1], technique = technique));
             }
+            lessonQueueTechniqueRepository.saveAll(lessonQueueTechniques)
+
+            // Create Events Table
+            val events = listOf(
+                Event(name="Level 1", startTime = LocalDateTime.now(), endTime = LocalDateTime.now(), isRecurring = false, level = 1),
+                Event(name="Level 2", startTime = LocalDateTime.now(), endTime = LocalDateTime.now(), isRecurring = false, level = 2),
+                Event(name="Level 3", startTime = LocalDateTime.now(), endTime = LocalDateTime.now(), isRecurring = false, level = 3)
+            )
+            classRepository.saveAll(events)
+
+            // Create EventQueues Table
+            val eventQueues = listOf(
+                EventQueue(event = events[0], lessonQueue = lessonQueues[0]),
+                EventQueue(event = events[1], lessonQueue = lessonQueues[1]),
+                EventQueue(event = events[2], lessonQueue = lessonQueues[2])
+            )
+            eventQueueRepository.saveAll(eventQueues)
         }
     }
 }

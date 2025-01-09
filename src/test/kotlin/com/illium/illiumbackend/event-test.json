@@ -1,0 +1,74 @@
+{
+  "create_event_request": {
+    "name": "New Event",
+    "description": "This is a test event",
+    "startTime": "2025-01-10T10:00:00",
+    "endTime": "2025-01-10T12:00:00",
+    "isRecurring": true,
+    "recurringRule": {
+      "frequency": "WEEKLY",
+      "interval": 1,
+      "daysOfWeek": "1110000",
+      "endDate": "2025-12-31T23:59:59"
+    },
+    "level": 2
+  },
+
+  "create_event_response":{
+    "eventId": 1,
+    "name": "New Event",
+    "description": "This is a test event",
+    "startTime": "2025-01-10T10:00:00",
+    "endTime": "2025-01-10T12:00:00",
+    "isRecurring": true,
+    "recurringRule": {
+    "ruleId": 1,
+    "frequency": "WEEKLY",
+    "interval": 1,
+    "daysOfWeek": "1110000",
+    "endDate": "2025-12-31T23:59:59",
+    "createdAt": "2025-01-07T14:00:00",
+    "updatedAt": "2025-01-07T14:00:00"
+    },
+    "level": 2,
+    "createdAt": "2025-01-07T14:00:00",
+    "updatedAt": "2025-01-07T14:00:00"
+  },
+
+
+  "path_param": {
+    "id": 1
+  },
+  "edit_event_request": {
+    "name": "Updated Event",
+    "description": "Updated description for the event",
+    "startTime": "2025-01-15T14:00:00",
+    "endTime": "2025-01-15T16:00:00",
+    "isRecurring": false,
+    "recurringRule": null,
+    "level": 3
+  },
+
+  "edit_event_response": {
+    "eventId": 1,
+    "name": "Updated Event",
+    "description": "Updated description for the event",
+    "startTime": "2025-01-15T14:00:00",
+    "endTime": "2025-01-15T16:00:00",
+    "isRecurring": false,
+    "recurringRule": null,
+    "level": 3,
+    "createdAt": "2025-01-07T14:00:00",
+    "updatedAt": "2025-01-07T14:30:00"
+  },
+
+  "delete_path_param": {
+    "id": 1
+  },
+  "response_on_failure": {
+    "status": 400,
+    "error": "Bad Request",
+    "message": "Event with id 1 not found",
+    "timestamp": "2025-01-07T14:40:00"
+  }
+}

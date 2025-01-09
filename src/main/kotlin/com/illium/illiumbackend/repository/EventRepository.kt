@@ -1,6 +1,6 @@
 package com.illium.illiumbackend.repository
 
-import com.illium.illiumbackend.model.Queue
+import com.illium.illiumbackend.model.Event
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface QueueRepository : JpaRepository<Queue, Long>
+interface EventRepository : JpaRepository<Event, Long>
