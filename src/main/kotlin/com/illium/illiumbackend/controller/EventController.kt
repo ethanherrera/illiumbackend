@@ -3,6 +3,7 @@ package com.illium.illiumbackend.controller
 // create a springboot controller for the event service
 import com.illium.illiumbackend.model.Event
 import com.illium.illiumbackend.model.EventRequest
+import com.illium.illiumbackend.model.EventResponse
 import com.illium.illiumbackend.service.EventService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,7 +16,7 @@ class EventController(
 ) {
 
      @PostMapping
-     fun createEvent(@RequestBody eventRequest: EventRequest) : ResponseEntity<Event> {
+     fun createEvent(@RequestBody eventRequest: EventRequest) : ResponseEntity<EventResponse> {
          return try {
              val event = eventService.createEvent(eventRequest)
              ResponseEntity(event, HttpStatus.CREATED)
@@ -26,7 +27,7 @@ class EventController(
      }
 
     @PutMapping("/{id}")
-    fun editEvent(@RequestBody eventRequest: EventRequest, @PathVariable id: Long) : ResponseEntity<Event> {
+    fun editEvent(@RequestBody eventRequest: EventRequest, @PathVariable id: Long) : ResponseEntity<EventResponse> {
         return try {
             val event = eventService.editEvent(eventRequest, id)
             ResponseEntity(event, HttpStatus.OK)

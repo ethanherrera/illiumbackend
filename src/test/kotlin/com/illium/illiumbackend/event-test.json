@@ -44,8 +44,13 @@
     "description": "Updated description for the event",
     "startTime": "2025-01-15T14:00:00",
     "endTime": "2025-01-15T16:00:00",
-    "isRecurring": false,
-    "recurringRule": null,
+    "isRecurring": true,
+    "recurringRule": {
+      "frequency": "YEARLY",
+      "interval": 1,
+      "daysOfWeek": "1110000",
+      "endDate": "2025-12-31T23:59:59"
+    },
     "level": 3
   },
 

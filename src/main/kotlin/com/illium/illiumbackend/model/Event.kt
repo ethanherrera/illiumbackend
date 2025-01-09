@@ -29,7 +29,7 @@ data class Event(
 
     @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name="rule_id")
-    var recurringRule: RecurringRule? = null, // Relationship to RecurringRule
+    var recurringRule: RecurringRule? = null,
 
     @Column(name = "level", nullable = false, updatable = false)
     var level: Int,

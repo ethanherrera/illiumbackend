@@ -4,14 +4,13 @@ import com.illium.illiumbackend.model.*
 import com.illium.illiumbackend.repository.EventRepository
 import org.springframework.stereotype.Service
 import java.lang.Exception
-import kotlin.math.min
 
 @Service
 class EventService(
     private val eventRepository: EventRepository,
     private val lessonQueueService: LessonQueueService,
 ) {
-    fun createEvent(eventRequest: EventRequest) : Event {
+    fun createEvent(eventRequest: EventRequest) : EventResponse {
         // Create event and its Recurring rule if it exists
         val event = eventRequest.toEntity()
         if (event.isRecurring && eventRequest.recurringRule != null) {
@@ -30,11 +29,11 @@ class EventService(
         // Save the event
         eventRepository.save(event)
 
-        return event
+        return event.toResponse()
     }
 
 
-    fun editEvent(eventRequest: EventRequest, id: Long) : Event {
+    fun editEvent(eventRequest: EventRequest, id: Long) : EventResponse {
         // Find the event to edit
         val event = eventRepository.findById(id).orElseThrow {
             Exception("Event with id $id not found")
@@ -49,11 +48,12 @@ class EventService(
         event.level = eventRequest.level
 
         // Update the recurring rule if it exists
-        if (event.isRecurring && eventRequest.recurringRule != null) {
+        if (!eventRequest.isRecurring || eventRequest.recurringRule == null) {
+            event.recurringRule = null
+        } else {
             val recurringRule = eventRequest.recurringRule.toEntity()
             event.recurringRule = recurringRule
         }
-
         // Delete and add new event queue if level changed
         if (event.level != eventRequest.level) {
             val lessonQueue = lessonQueueService.findLessonQueueById(id = eventRequest.level.toLong())
@@ -65,7 +65,7 @@ class EventService(
         // Save the updated event
         eventRepository.save(event)
 
-        return event
+        return event.toResponse()
     }
 
     fun deleteEvent(id: Long) {
