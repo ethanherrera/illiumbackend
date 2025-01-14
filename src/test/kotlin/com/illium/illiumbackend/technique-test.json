@@ -1,0 +1,58 @@
+{
+  "create_technique_request": {
+    "name": "Basic Kick",
+    "description": "A fundamental kick technique for beginners.",
+    "level": 1
+  },
+  "create_technique_response": {
+    "techniqueId": 1,
+    "name": "Basic Kick",
+    "description": "A fundamental kick technique for beginners.",
+    "level": 1,
+    "createdAt": "2025-01-10T10:00:00",
+    "updatedAt": "2025-01-10T10:00:00"
+  },
+  "get_all_techniques_response": [
+    {
+      "techniqueId": 1,
+      "name": "Basic Kick",
+      "description": "A fundamental kick technique for beginners.",
+      "level": 1,
+      "createdAt": "2025-01-10T10:00:00",
+      "updatedAt": "2025-01-10T10:00:00"
+    },
+    {
+      "techniqueId": 2,
+      "name": "Advanced Spin Kick",
+      "description": "A complex spin kick for advanced practitioners.",
+      "level": 3,
+      "createdAt": "2025-01-11T12:00:00",
+      "updatedAt": "2025-01-11T12:00:00"
+    }
+  ],
+  "path_param": {
+    "id": 1
+  },
+  "edit_technique_request": {
+    "name": "Basic Kick Updated",
+    "description": "An updated description for the basic kick technique.",
+    "level": 1
+  },
+  "edit_technique_response": {
+    "techniqueId": 1,
+    "name": "Basic Kick Updated",
+    "description": "An updated description for the basic kick technique.",
+    "level": 1,
+    "createdAt": "2025-01-10T10:00:00",
+    "updatedAt": "2025-01-11T12:30:00"
+  },
+  "delete_path_param": {
+    "id": 1
+  },
+  "response_on_failure": {
+    "status": 400,
+    "error": "Bad Request",
+    "message": "Technique with id 1 not found",
+    "timestamp": "2025-01-12T14:00:00"
+  }
+}
