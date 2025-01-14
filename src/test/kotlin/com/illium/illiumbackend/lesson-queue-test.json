@@ -1,16 +1,18 @@
 {
-  "create_technique_request": {
-    "name": "Queue Level 1",
+  "create_lesson_queue_request": {
+    "name": "Basic Kick",
+    "description": "A fundamental kick technique for beginners.",
     "level": 1
   },
-  "create_technique_response": {
+  "create_lesson_queue_response": {
     "techniqueId": 1,
     "name": "Basic Kick",
+    "description": "A fundamental kick technique for beginners.",
     "level": 1,
     "createdAt": "2025-01-10T10:00:00",
     "updatedAt": "2025-01-10T10:00:00"
   },
-  "get_all_techniques_response": [
+  "get_all_lesson_queue_response": [
     {
       "techniqueId": 1,
       "name": "Basic Kick",
@@ -31,13 +33,15 @@
   "path_param": {
     "id": 1
   },
-  "edit_technique_request": {
+  "edit_lesson_queue_request": {
     "name": "Basic Kick Updated",
+    "description": "An updated description for the basic kick technique.",
     "level": 1
   },
-  "edit_technique_response": {
+  "edit_lesson_queue_response": {
     "techniqueId": 1,
     "name": "Basic Kick Updated",
+    "description": "An updated description for the basic kick technique.",
     "level": 1,
     "createdAt": "2025-01-10T10:00:00",
     "updatedAt": "2025-01-11T12:30:00"
