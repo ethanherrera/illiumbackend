@@ -11,9 +11,19 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/events")
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class EventController(
     private val eventService: EventService
 ) {
+
+    @GetMapping
+    fun getAllEvents() : ResponseEntity<List<EventResponse>> {
+        return try {
+            ResponseEntity(eventService.getAllEvents(), HttpStatus.OK)
+        } catch (e: Exception) {
+            ResponseEntity(HttpStatus.BAD_REQUEST)
+        }
+    }
 
      @PostMapping
      fun createEvent(@RequestBody eventRequest: EventRequest) : ResponseEntity<EventResponse> {

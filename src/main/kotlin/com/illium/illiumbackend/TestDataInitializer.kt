@@ -168,9 +168,9 @@ class TestDataInitializer {
 
             // Create Events Table
             val events = listOf(
-                Event(name="Level 1", startTime = LocalDateTime.now(), endTime = LocalDateTime.now(), isRecurring = false, level = 1),
-                Event(name="Level 2", startTime = LocalDateTime.now(), endTime = LocalDateTime.now(), isRecurring = false, level = 2),
-                Event(name="Level 3", startTime = LocalDateTime.now(), endTime = LocalDateTime.now(), isRecurring = false, level = 3)
+                Event(name="Level 1", startTime = LocalDateTime.now(), endTime = LocalDateTime.now().plusHours(2), isRecurring = false, level = 1),
+                Event(name="Level 2", startTime = LocalDateTime.now().plusDays(1), endTime = LocalDateTime.now().plusDays(1).plusHours(2), isRecurring = false, level = 2),
+                Event(name="Level 3", startTime = LocalDateTime.now().plusDays(2), endTime = LocalDateTime.now().plusDays(2).plusHours(2), isRecurring = false, level = 3)
             )
             classRepository.saveAll(events)
 

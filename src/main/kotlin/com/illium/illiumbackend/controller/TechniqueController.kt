@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/techniques")
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class TechniqueController(
     private val techniqueService: TechniqueService
 ) {

@@ -10,6 +10,10 @@ class EventService(
     private val eventRepository: EventRepository,
     private val lessonQueueService: LessonQueueService,
 ) {
+
+    fun getAllEvents() : List<EventResponse> {
+        return eventRepository.findAll().map { it.toResponse() }
+    }
     fun createEvent(eventRequest: EventRequest) : EventResponse {
         // Create event and its Recurring rule if it exists
         val event = eventRequest.toEntity()
